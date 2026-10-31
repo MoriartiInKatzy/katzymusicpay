@@ -33,7 +33,6 @@
             overflow-x: hidden;
         }
 
-        /* Верхний контент */
         .main-content {
             display: flex;
             flex-direction: column;
@@ -47,7 +46,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Аватарка */
         .avatar-wrapper {
             width: 96px;
             height: 96px;
@@ -65,7 +63,6 @@
             object-fit: cover;
         }
 
-        /* Имя и тег */
         .user-name {
             font-size: 22px;
             font-weight: 700;
@@ -80,7 +77,6 @@
             margin-bottom: 36px;
         }
 
-        /* Секция баланса в стиле Т-Банка */
         .balance-section {
             display: flex;
             flex-direction: column;
@@ -96,14 +92,18 @@
         }
 
         .balance-amount {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 800;
             letter-spacing: -1px;
             color: #ffffff;
             line-height: 1.1;
         }
 
-        /* Блок с кнопками снизу */
+        /* Класс для отрицательного баланса (красный цвет) */
+        .balance-amount.negative {
+            color: #ff453a;
+        }
+
         .buttons-group {
             display: flex;
             flex-direction: column;
@@ -135,7 +135,6 @@
 </head>
 <body>
 
-    <!-- Основная информация -->
     <div class="main-content">
         <div class="avatar-wrapper">
             <img class="avatar-img" id="user-avatar" src="https://picsum.photos/200" alt="Avatar">
@@ -149,7 +148,6 @@
         </div>
     </div>
 
-    <!-- Кнопки действий -->
     <div class="buttons-group">
         <button class="action-btn" onclick="requestTopUp()">Пополнить счет</button>
         <button class="action-btn" onclick="requestWithdraw()">Вывести деньги</button>
@@ -161,7 +159,7 @@
         tg.expand();
 
         const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
-        let userId = '123456789'; // Дефолтный ID для тестов
+        let userId = '6510148512'; // Дефолтный ID для тестов
 
         if (user) {
             document.getElementById('user-name').innerText = `${user.first_name || ''} ${user.last_name || ''}`.trim();
@@ -171,16 +169,28 @@
             }
             userId = String(user.id);
         } else {
-            document.getElementById('user-name').innerText = 'Никита Долгих';
+            document.getElementById('user-name').innerText = 'Никита Сарычев';
             document.getElementById('user-tag').innerText = '@MoriartiInKatzy';
         }
 
-        // Загрузка баланса из JSON-файла на GitHub
+        // Загрузка баланса из JSON-файла
         fetch('balances.json?t=' + new Date().getTime())
             .then(response => response.json())
             .then(balances => {
-                let userBalance = balances[userId] !== undefined ? balances[userId] : 0;
-                document.getElementById('user-balance').innerText = Number(userBalance).toLocaleString();
+                let rawBalance = balances[userId] !== undefined ? balances[userId] : 0;
+                let balanceEl = document.getElementById('user-balance');
+                let balanceContainer = balanceEl.parentElement;
+
+                balanceEl.innerText = Number(rawBalance).toLocaleString('ru-RU', {
+                    minimumFractionDigits: rawBalance % 1 !== 0 ? 2 : 0,
+                    maximumFractionDigits: 2
+                });
+
+                if (rawBalance < 0) {
+                    balanceContainer.classList.add('negative');
+                } else {
+                    balanceContainer.classList.remove('negative');
+                }
             })
             .catch(error => {
                 console.error('Ошибка загрузки баланса:', error);
@@ -189,12 +199,12 @@
 
         function requestTopUp() {
             const text = encodeURIComponent(`Привет! Хочу пополнить счет в KATZY MUSIC. Мой ID: ${userId}`);
-            tg.openTelegramLink(`https://t.me/MoriartiInKatzy?text=${text}`);
+            tg.openTelegramLink(`https://t.me/katzy_music?text=${text}`);
         }
 
         function requestWithdraw() {
             const text = encodeURIComponent(`Привет! Хочу вывести средства со счета KATZY MUSIC. Мой ID: ${userId}`);
-            tg.openTelegramLink(`https://t.me/MoriartiInKatzy?text=${text}`);
+            tg.openTelegramLink(`https://t.me/katzy_music?text=${text}`);
         }
     </script>
 </body>
