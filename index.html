@@ -97,11 +97,7 @@
             letter-spacing: -1px;
             color: #ffffff;
             line-height: 1.1;
-        }
-
-        /* Класс для отрицательного баланса (красный цвет) */
-        .balance-amount.negative {
-            color: #ff453a;
+            transition: color 0.2s ease;
         }
 
         .buttons-group {
@@ -144,7 +140,7 @@
 
         <div class="balance-section">
             <span class="balance-label">Ваш личный счет</span>
-            <div class="balance-amount"><span id="user-balance">0</span> ₽</div>
+            <div class="balance-amount" id="balance-container"><span id="user-balance">0</span> ₽</div>
         </div>
     </div>
 
@@ -159,7 +155,7 @@
         tg.expand();
 
         const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
-        let userId = '6510148512'; // Дефолтный ID для тестов
+        let userId = '6510148512';
 
         if (user) {
             document.getElementById('user-name').innerText = `${user.first_name || ''} ${user.last_name || ''}`.trim();
@@ -173,23 +169,23 @@
             document.getElementById('user-tag').innerText = '@MoriartiInKatzy';
         }
 
-        // Загрузка баланса из JSON-файла
         fetch('balances.json?t=' + new Date().getTime())
             .then(response => response.json())
             .then(balances => {
                 let rawBalance = balances[userId] !== undefined ? balances[userId] : 0;
                 let balanceEl = document.getElementById('user-balance');
-                let balanceContainer = balanceEl.parentElement;
+                let balanceContainer = document.getElementById('balance-container');
 
                 balanceEl.innerText = Number(rawBalance).toLocaleString('ru-RU', {
                     minimumFractionDigits: rawBalance % 1 !== 0 ? 2 : 0,
                     maximumFractionDigits: 2
                 });
 
-                if (rawBalance < 0) {
-                    balanceContainer.classList.add('negative');
+                // Принудительно задаем цвет текста напрямую
+                if (Number(rawBalance) < 0) {
+                    balanceContainer.style.color = '#ff453a';
                 } else {
-                    balanceContainer.classList.remove('negative');
+                    balanceContainer.style.color = '#ffffff';
                 }
             })
             .catch(error => {
