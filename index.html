@@ -7,11 +7,11 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: var(--tg-theme-bg-color, #0a0a0c);
-            --text-color: var(--tg-theme-text-color, #ffffff);
-            --hint-color: var(--tg-theme-hint-color, #8e8e93);
-            --glass-bg: rgba(255, 255, 255, 0.06);
-            --glass-border: rgba(255, 255, 255, 0.12);
+            --bg-color: #0d131e;
+            --text-color: #ffffff;
+            --hint-color: #8b96a5;
+            --btn-bg: #ffffff;
+            --btn-text: #000000;
         }
 
         * {
@@ -22,55 +22,41 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding-bottom: 40px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 20px 32px 20px;
             overflow-x: hidden;
         }
 
-        /* Шапка с логотипом */
-        .app-header {
-            position: sticky;
-            top: 0;
-            background-color: rgba(10, 10, 12, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 20;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .app-logo {
-            height: 32px;
-            object-fit: contain;
-        }
-
-        /* Контент профиля */
-        .profile-container {
-            padding: 20px 16px;
+        /* Верхний контент */
+        .main-content {
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: 10px;
             animation: fadeIn 0.4s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* Аватарка */
         .avatar-wrapper {
-            width: 90px;
-            height: 90px;
+            width: 96px;
+            height: 96px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.2);
             margin-bottom: 14px;
-            background-color: #1c1c1e;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            background-color: #1a2230;
         }
 
         .avatar-img {
@@ -79,91 +65,94 @@
             object-fit: cover;
         }
 
-        /* Имя пользователя */
+        /* Имя и тег */
         .user-name {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+            margin-bottom: 2px;
             text-align: center;
         }
 
         .user-tag {
             font-size: 14px;
             color: var(--hint-color);
-            margin-bottom: 24px;
+            margin-bottom: 36px;
         }
 
-        /* Стеклянная карточка баланса */
-        .balance-card {
-            width: 100%;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+        /* Секция баланса в стиле Т-Банка */
+        .balance-section {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 16px;
+            align-items: center;
+            gap: 8px;
         }
 
-        .balance-title {
-            font-size: 14px;
+        .balance-label {
+            font-size: 16px;
             color: var(--hint-color);
             font-weight: 500;
+            letter-spacing: 0.2px;
         }
 
         .balance-amount {
-            font-size: 28px;
+            font-size: 48px;
             font-weight: 800;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
+            color: #ffffff;
+            line-height: 1.1;
         }
 
-        /* Кнопка действия */
+        /* Блок с кнопками снизу */
+        .buttons-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            margin-top: auto;
+        }
+
         .action-btn {
             width: 100%;
-            background: #ffffff;
-            color: #000000;
+            background: var(--btn-bg);
+            color: var(--btn-text);
             border: none;
-            padding: 14px;
-            border-radius: 14px;
+            padding: 16px;
+            border-radius: 16px;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-            margin-top: 8px;
+            transition: transform 0.1s ease, opacity 0.2s ease;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .action-btn:active {
-            transform: scale(0.96);
-            background: #e5e5ea;
+            transform: scale(0.97);
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
 
-    <!-- Шапка -->
-    <header class="app-header">
-        <img class="app-logo" src="logo.png" alt="KATZY MUSIC" onerror="this.src='https://picsum.photos/120/35?random=logo'">
-    </header>
-
-    <!-- Профиль -->
-    <div class="profile-container">
+    <!-- Основная информация -->
+    <div class="main-content">
         <div class="avatar-wrapper">
             <img class="avatar-img" id="user-avatar" src="https://picsum.photos/200" alt="Avatar">
         </div>
         <div class="user-name" id="user-name">Загрузка...</div>
         <div class="user-tag" id="user-tag">@username</div>
 
-        <!-- Карточка счета -->
-        <div class="balance-card">
-            <span class="balance-title">Ваш баланс счета</span>
-            <span class="balance-amount" id="user-balance">0 ₽</span>
-            <span style="font-size: 12px; color: var(--hint-color);">Средства на счету можно использовать для оплаты услуг и заказов Katzy Music.</span>
+        <div class="balance-section">
+            <span class="balance-label">Ваш личный счет</span>
+            <div class="balance-amount"><span id="user-balance">0</span> ₽</div>
         </div>
+    </div>
 
+    <!-- Кнопки действий -->
+    <div class="buttons-group">
         <button class="action-btn" onclick="requestTopUp()">Пополнить счет</button>
+        <button class="action-btn" onclick="requestWithdraw()">Вывести деньги</button>
     </div>
 
     <script>
@@ -171,8 +160,8 @@
         tg.ready();
         tg.expand();
 
-        // Получаем данные пользователя из Telegram
         const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
+        let userId = '123456789'; // Дефолтный ID для тестов
 
         if (user) {
             document.getElementById('user-name').innerText = `${user.first_name || ''} ${user.last_name || ''}`.trim();
@@ -180,18 +169,31 @@
             if (user.photo_url) {
                 document.getElementById('user-avatar').src = user.photo_url;
             }
+            userId = String(user.id);
         } else {
-            // Заглушка для теста вне Telegram
-            document.getElementById('user-name').innerText = 'Никита Сарычев';
+            document.getElementById('user-name').innerText = 'Никита Долгих';
             document.getElementById('user-tag').innerText = '@MoriartiInKatzy';
         }
 
-        // Баланс (в будущем подключим к твоей базе данных)
-        let currentBalance = 0; 
-        document.getElementById('user-balance').innerText = currentBalance.toLocaleString() + ' ₽';
+        // Загрузка баланса из JSON-файла на GitHub
+        fetch('balances.json?t=' + new Date().getTime())
+            .then(response => response.json())
+            .then(balances => {
+                let userBalance = balances[userId] !== undefined ? balances[userId] : 0;
+                document.getElementById('user-balance').innerText = Number(userBalance).toLocaleString();
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки баланса:', error);
+                document.getElementById('user-balance').innerText = '0';
+            });
 
         function requestTopUp() {
-            const text = encodeURIComponent(`Привет! Хочу пополнить баланс аккаунта в KATZY MUSIC.`);
+            const text = encodeURIComponent(`Привет! Хочу пополнить счет в KATZY MUSIC. Мой ID: ${userId}`);
+            tg.openTelegramLink(`https://t.me/MoriartiInKatzy?text=${text}`);
+        }
+
+        function requestWithdraw() {
+            const text = encodeURIComponent(`Привет! Хочу вывести средства со счета KATZY MUSIC. Мой ID: ${userId}`);
             tg.openTelegramLink(`https://t.me/MoriartiInKatzy?text=${text}`);
         }
     </script>
