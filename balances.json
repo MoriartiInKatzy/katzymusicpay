@@ -2,20 +2,24 @@
   "settings": {
     "label_name": "KATZY MUSIC"
   },
-  "users": {
+  "balances": {
+    "6510148512": 4261,
+    "1443013111": -11215.77,
+    "7929397053": 42371,
+    "8974335043": -17261.18
+  },
+  "team": {
     "6510148512": {
       "name": "Никита Сарычев",
       "username": "@MoriartiInKatzy",
-      "balance": 4261,
       "status": "Основатель & A&R",
       "verified": true,
-      "role": "Директор лейбла",
+      "role": "Директор KATZY MUSIC",
       "badges": ["🏆 Основатель", "💿 Платиновый релиз", "⚡ Топ продюсер"]
     },
     "1443013111": {
       "name": "Alex",
       "username": "@Russia958",
-      "balance": -11215.77,
       "status": "Запись нового альбома",
       "verified": true,
       "role": "Артист",
@@ -24,7 +28,6 @@
     "7929397053": {
       "name": "Katzy Resident",
       "username": "@katzy_artist",
-      "balance": 42371,
       "status": "Релиз в эту пятницу",
       "verified": false,
       "role": "Артист",
@@ -33,10 +36,9 @@
     "8974335043": {
       "name": "Moon Sound",
       "username": "@moon_label",
-      "balance": -17261.18,
       "status": "На гастролях",
       "verified": true,
-      "role": "Партнер лейбла",
+      "role": "Партнер",
       "badges": ["🌍 Гастролер", "🎧 Саунд-дизайнер"]
     }
   }
