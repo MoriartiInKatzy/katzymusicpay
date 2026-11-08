@@ -9,37 +9,77 @@
     "8974335043": -17261.18
   },
   "team": {
-    "6510148512": {
-      "name": "Никита Сарычев",
-      "username": "@MoriartiInKatzy",
-      "status": "Основатель & A&R",
+    "katzy_ceo": {
+      "name": "Katzy",
+      "username": "@Katzy",
+      "status": "Генеральный Директор KATZY MUSIC",
       "verified": true,
-      "role": "Директор KATZY MUSIC",
-      "badges": ["🏆 Основатель", "💿 Платиновый релиз", "⚡ Топ продюсер"]
+      "role": "Генеральный Директор",
+      "avatar": "katzyava.jpg",
+      "badges": ["🎖 CEO", "⚡️ Высшее Руководство"]
     },
-    "1443013111": {
-      "name": "Alex",
-      "username": "@Russia958",
-      "status": "Запись нового альбома",
+    "lesha_team": {
+      "name": "Алексей Мясников",
+      "username": "@Alexeych",
+      "status": "Заместитель Генерального Директора KATZY MUSIC",
       "verified": true,
-      "role": "Артист",
-      "badges": ["🎤 Хитмейкер", "🔥 В чартах"]
+      "role": "Заместитель Ген. Директора",
+      "avatar": "leshaava.jpg",
+      "badges": ["🎖 CCO", "⚡️ Высшее Руководство", "🗣 Project Manager"]
     },
-    "7929397053": {
-      "name": "Katzy Resident",
-      "username": "@katzy_artist",
-      "status": "Релиз в эту пятницу",
+    "grin_team": {
+      "name": "Александр Грин",
+      "username": "@grin_finance",
+      "status": "Финансовый Управляющий KATZY MUSIC",
+      "verified": true,
+      "role": "Финансовый Управляющий",
+      "avatar": "grinava.jpg",
+      "badges": ["🎖 CCO", "⚡️ Высшее Руководство", "👤 Юридический Отдел"]
+    },
+    "efich_team": {
+      "name": "Владимир Ефимов",
+      "username": "@efimich",
+      "status": "Спонсор KATZY MUSIC",
+      "verified": true,
+      "role": "Спонсор",
+      "avatar": "efichava.jpg",
+      "badges": ["🎶 Музыкальный Критик", "💸 Спонсор"]
+    },
+    "anya_team": {
+      "name": "Анна Шведцова",
+      "username": "@anya",
+      "status": "Стилист / Дизайнер KATZY MUSIC",
+      "verified": true,
+      "role": "Стилист / Дизайнер",
+      "avatar": "anyaava.jpg",
+      "badges": ["🪭 Мерч-Дизайнер", "👑 Иллюстратор"]
+    },
+    "grisha_team": {
+      "name": "Григорий Морозов",
+      "username": "@grishanya",
+      "status": "Главный Маркетолог KATZY MUSIC",
+      "verified": true,
+      "role": "Главный Маркетолог",
+      "avatar": "grishaava.jpg",
+      "badges": ["🎖 CMO", "📈 Отделение маркетинга и продвижения"]
+    },
+    "omskiy_team": {
+      "name": "Андрей Омский",
+      "username": "@omskiy_target",
+      "status": "Маркетолог KATZY MUSIC",
       "verified": false,
-      "role": "Артист",
-      "badges": ["🎸 Музыкант", "✨ Новичок года"]
+      "role": "Маркетолог",
+      "avatar": "Omskiyava.jpg",
+      "badges": ["📈 Отделение маркетинга и продвижения"]
     },
-    "8974335043": {
-      "name": "Moon Sound",
-      "username": "@moon_label",
-      "status": "На гастролях",
-      "verified": true,
-      "role": "Партнер",
-      "badges": ["🌍 Гастролер", "🎧 Саунд-дизайнер"]
+    "vika_team": {
+      "name": "Виктория Космодемьянская",
+      "username": "@vika21",
+      "status": "Менеджер KATZY MUSIC",
+      "verified": false,
+      "role": "Менеджер Артистов",
+      "avatar": "Vikaava.jpg",
+      "badges": ["👤 Менеджер Артистов"]
     }
   }
 }
