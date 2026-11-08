@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Katzy Music — Личный кабинет</title>
+    <title>Katzy Music — Хаб</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
             --bg-color: #0d131e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
             --text-color: #ffffff;
             --hint-color: #8b96a5;
-            --btn-bg: #ffffff;
-            --btn-text: #000000;
         }
 
         * {
@@ -28,22 +28,33 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 24px 20px 32px 20px;
+            padding: 16px 16px 80px 16px; /* Отступ снизу под нижнюю панель */
             overflow-x: hidden;
         }
 
-        .main-content {
+        /* Экраны */
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Профиль / Кошелек */
+        .profile-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-top: 10px;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .avatar-wrapper {
@@ -63,18 +74,40 @@
             object-fit: cover;
         }
 
+        .user-name-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 2px;
+        }
+
         .user-name {
             font-size: 22px;
             font-weight: 700;
             letter-spacing: 0.3px;
-            margin-bottom: 2px;
             text-align: center;
+        }
+
+        .verified-badge {
+            color: #007aff;
+            font-size: 18px;
         }
 
         .user-tag {
             font-size: 14px;
             color: var(--hint-color);
-            margin-bottom: 36px;
+            margin-bottom: 6px;
+        }
+
+        .user-status {
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 14px;
+            border-radius: 20px;
+            color: var(--hint-color);
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            text-align: center;
         }
 
         .balance-section {
@@ -82,13 +115,13 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
+            margin-bottom: 24px;
         }
 
         .balance-label {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--hint-color);
             font-weight: 500;
-            letter-spacing: 0.2px;
         }
 
         .balance-amount {
@@ -100,6 +133,113 @@
             transition: color 0.2s ease;
         }
 
+        /* Награды / Достижения */
+        .badges-container {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .badge-chip {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Список резидентов */
+        .residents-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .resident-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .resident-card:active {
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .resident-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1a2230;
+        }
+
+        .resident-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .resident-name-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .resident-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .resident-desc {
+            font-size: 13px;
+            color: var(--hint-color);
+        }
+
+        /* Каталог */
+        .catalog-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .catalog-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .catalog-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .catalog-info p {
+            font-size: 13px;
+            color: var(--hint-color);
+        }
+
+        .catalog-price {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* Кнопки */
         .buttons-group {
             display: flex;
             flex-direction: column;
@@ -110,15 +250,14 @@
 
         .action-btn {
             width: 100%;
-            background: var(--btn-bg);
-            color: var(--btn-text);
+            background: #ffffff;
+            color: #000000;
             border: none;
-            padding: 16px;
+            padding: 15px;
             border-radius: 16px;
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
-            transition: transform 0.1s ease, opacity 0.2s ease;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
@@ -127,79 +266,256 @@
             transform: scale(0.97);
             opacity: 0.9;
         }
+
+        /* Фиксированная нижняя панель навигации */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 19, 30, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 20px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            background: transparent;
+            border: none;
+            color: var(--hint-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active {
+            color: #ffffff;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="main-content">
-        <div class="avatar-wrapper">
-            <img class="avatar-img" id="user-avatar" src="https://picsum.photos/200" alt="Avatar">
-        </div>
-        <div class="user-name" id="user-name">Загрузка...</div>
-        <div class="user-tag" id="user-tag">@username</div>
+    <!-- ЭКРАН 1: Кошелек / Личный кабинет -->
+    <div id="screen-wallet" class="screen active">
+        <div class="profile-container">
+            <div class="avatar-wrapper">
+                <img class="avatar-img" id="user-avatar" src="https://picsum.photos/200" alt="Avatar">
+            </div>
+            <div class="user-name-row">
+                <div class="user-name" id="user-name">Загрузка...</div>
+                <span id="user-verified" class="verified-badge" style="display: none;">✔</span>
+            </div>
+            <div class="user-tag" id="user-tag">@username</div>
+            <div class="user-status" id="user-status">Резидент Katzy Music</div>
 
-        <div class="balance-section">
-            <span class="balance-label">Ваш личный счет</span>
-            <div class="balance-amount" id="balance-container"><span id="user-balance">0</span> ₽</div>
+            <div class="balance-section">
+                <span class="balance-label">Личный счет</span>
+                <div class="balance-amount" id="balance-container"><span id="user-balance">0</span> ₽</div>
+            </div>
+
+            <!-- Достижения и награды -->
+            <div class="badges-container" id="user-badges">
+                <!-- Динамически загружаются медали -->
+            </div>
+        </div>
+
+        <div class="buttons-group">
+            <button class="action-btn" onclick="requestAction('Пополнить')">Пополнить счет</button>
+            <button class="action-btn" onclick="requestAction('Вывести')">Вывести деньги</button>
         </div>
     </div>
 
-    <div class="buttons-group">
-        <button class="action-btn" onclick="requestTopUp()">Пополнить счет</button>
-        <button class="action-btn" onclick="requestWithdraw()">Вывести деньги</button>
+    <!-- ЭКРАН 2: Резиденты / Артисты -->
+    <div id="screen-residents" class="screen">
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Резиденты лейбла</div>
+        <div class="residents-list" id="residents-container">
+            <!-- Список артистов -->
+        </div>
     </div>
+
+    <!-- ЭКРАН 3: Каталог услуг/релизов -->
+    <div id="screen-catalog" class="screen">
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Каталог услуг</div>
+        <div class="catalog-grid">
+            <div class="catalog-item">
+                <div class="catalog-info">
+                    <h4>Сведение и Мастеринг</h4>
+                    <p>Профессиональная обработка трека</p>
+                </div>
+                <div class="catalog-price">3 500 ₽</div>
+            </div>
+            <div class="catalog-item">
+                <div class="catalog-info">
+                    <h4>Дистрибуция трека</h4>
+                    <p>Загрузка на все площадки</p>
+                </div>
+                <div class="catalog-price">1 500 ₽</div>
+            </div>
+            <div class="catalog-item">
+                <div class="catalog-info">
+                    <h4>Продвижение в Reels / TikTok</h4>
+                    <p>Маркетинговая стратегия</p>
+                </div>
+                <div class="catalog-price">5 000 ₽</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Нижняя панель навигации -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" id="nav-wallet" onclick="switchScreen('wallet')">
+            <span class="nav-icon">💳</span>
+            <span>Кошелек</span>
+        </button>
+        <button class="nav-item" id="nav-residents" onclick="switchScreen('residents')">
+            <span class="nav-icon">⭐</span>
+            <span>Резиденты</span>
+        </button>
+        <button class="nav-item" id="nav-catalog" onclick="switchScreen('catalog')">
+            <span class="nav-icon">📦</span>
+            <span>Каталог</span>
+        </button>
+    </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
-        let userId = '6510148512';
+        const telegramUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
+        let currentUserId = telegramUser ? String(telegramUser.id) : '6510148512';
+        let globalUsersData = {};
 
-        if (user) {
-            document.getElementById('user-name').innerText = `${user.first_name || ''} ${user.last_name || ''}`.trim();
-            document.getElementById('user-tag').innerText = user.username ? `@${user.username}` : `ID: ${user.id}`;
-            if (user.photo_url) {
-                document.getElementById('user-avatar').src = user.photo_url;
+        // Переключение экранов через нижнюю панель
+        function switchScreen(screenName) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+
+            document.getElementById(`screen-${screenName}`).classList.add('active');
+            document.getElementById(`nav-${screenName}`).classList.add('active');
+
+            if (screenName === 'wallet') {
+                renderProfile(currentUserId);
+            } else if (screenName === 'residents') {
+                renderResidentsList();
             }
-            userId = String(user.id);
-        } else {
-            document.getElementById('user-name').innerText = 'Никита Сарычев';
-            document.getElementById('user-tag').innerText = '@MoriartiInKatzy';
         }
 
+        // Загрузка данных
         fetch('balances.json?t=' + new Date().getTime())
             .then(response => response.json())
-            .then(balances => {
-                let rawBalance = balances[userId] !== undefined ? balances[userId] : 0;
-                let balanceEl = document.getElementById('user-balance');
-                let balanceContainer = document.getElementById('balance-container');
-
-                balanceEl.innerText = Number(rawBalance).toLocaleString('ru-RU', {
-                    minimumFractionDigits: rawBalance % 1 !== 0 ? 2 : 0,
-                    maximumFractionDigits: 2
-                });
-
-                // Принудительно задаем цвет текста напрямую
-                if (Number(rawBalance) < 0) {
-                    balanceContainer.style.color = '#ff453a';
-                } else {
-                    balanceContainer.style.color = '#ffffff';
-                }
+            .then(data => {
+                globalUsersData = data.users || {};
+                renderProfile(currentUserId);
+                renderResidentsList();
             })
-            .catch(error => {
-                console.error('Ошибка загрузки баланса:', error);
-                document.getElementById('user-balance').innerText = '0';
+            .catch(error => console.error('Ошибка загрузки данных:', error));
+
+        // Отрисовка профиля в кошельке
+        function renderProfile(userId) {
+            const users = globalUsersData;
+            let userData = users[userId];
+
+            if (!userData) {
+                userData = {
+                    name: telegramUser ? `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() : 'Гость',
+                    username: telegramUser && telegramUser.username ? `@${telegramUser.username}` : `@id_${userId}`,
+                    balance: 0,
+                    status: 'Резидент Katzy Music',
+                    verified: false,
+                    badges: ['🎵 Новичок']
+                };
+            }
+
+            document.getElementById('user-name').innerText = userData.name;
+            document.getElementById('user-tag').innerText = userData.username;
+            document.getElementById('user-status').innerText = `${userData.role || 'Артист'} • ${userData.status || 'В сети'}`;
+            
+            document.getElementById('user-verified').style.display = userData.verified ? 'inline' : 'none';
+
+            if (telegramUser && userId === String(telegramUser.id) && telegramUser.photo_url) {
+                document.getElementById('user-avatar').src = telegramUser.photo_url;
+            } else {
+                document.getElementById('user-avatar').src = `https://picsum.photos/seed/${userId}/200`;
+            }
+
+            let rawBalance = userData.balance;
+            let balanceEl = document.getElementById('user-balance');
+            let balanceContainer = document.getElementById('balance-container');
+
+            balanceEl.innerText = Number(rawBalance).toLocaleString('ru-RU', {
+                minimumFractionDigits: rawBalance % 1 !== 0 ? 2 : 0,
+                maximumFractionDigits: 2
             });
 
-        function requestTopUp() {
-            const text = encodeURIComponent(`Привет! Хочу пополнить счет в KATZY MUSIC. Мой ID: ${userId}`);
-            tg.openTelegramLink(`https://t.me/katzy_music?text=${text}`);
+            balanceContainer.style.color = Number(rawBalance) < 0 ? '#ff453a' : '#ffffff';
+
+            // Отрисовка наград/достижений
+            const badgesContainer = document.getElementById('user-badges');
+            badgesContainer.innerHTML = '';
+            if (userData.badges && userData.badges.length > 0) {
+                userData.badges.forEach(badge => {
+                    const chip = document.createElement('div');
+                    chip.className = 'badge-chip';
+                    chip.innerText = badge;
+                    badgesContainer.appendChild(chip);
+                });
+            }
         }
 
-        function requestWithdraw() {
-            const text = encodeURIComponent(`Привет! Хочу вывести средства со счета KATZY MUSIC. Мой ID: ${userId}`);
+        // Отрисовка списка резидентов
+        function renderResidentsList() {
+            const container = document.getElementById('residents-container');
+            container.innerHTML = '';
+
+            for (const [id, user] of Object.entries(globalUsersData)) {
+                const card = document.createElement('div');
+                card.className = 'resident-card';
+                card.onclick = () => {
+                    currentUserId = id;
+                    switchScreen('wallet');
+                };
+
+                let rawBalance = user.balance;
+                let formattedBalance = Number(rawBalance).toLocaleString('ru-RU', {
+                    minimumFractionDigits: rawBalance % 1 !== 0 ? 2 : 0,
+                    maximumFractionDigits: 2
+                }) + ' ₽';
+
+                card.innerHTML = `
+                    <img class="resident-avatar" src="https://picsum.photos/seed/${id}/100" alt="Avatar">
+                    <div class="resident-info">
+                        <div class="resident-name-row">
+                            <span class="resident-title">${user.name}</span>
+                            ${user.verified ? '<span style="color: #007aff; font-size: 14px;">✔</span>' : ''}
+                        </div>
+                        <span class="resident-desc">${user.status}</span>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 14px; font-weight: 700; color: ${rawBalance < 0 ? '#ff453a' : 'inherit'}">${formattedBalance}</div>
+                        <span style="font-size: 11px; color: var(--hint-color);">${user.role || 'Артист'}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        function requestAction(type) {
+            const text = encodeURIComponent(`Привет! Хочу ${type === 'Пополнить' ? 'пополнить счет' : 'вывести средства'} в KATZY MUSIC. Мой ID: ${currentUserId}`);
             tg.openTelegramLink(`https://t.me/katzy_music?text=${text}`);
         }
     </script>
