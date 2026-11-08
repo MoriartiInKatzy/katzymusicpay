@@ -31,7 +31,7 @@
       "name": "Александр Грин",
       "username": "@grin_finance",
       "status": "Финансовый Управляющий KATZY MUSIC",
-      "verified": true,
+      "verified": false,
       "role": "Финансовый Управляющий",
       "avatar": "grinava.jpg",
       "badges": ["🎖 CCO", "⚡️ Высшее Руководство", "👤 Юридический Отдел"]
@@ -40,7 +40,7 @@
       "name": "Владимир Ефимов",
       "username": "@efimich",
       "status": "Спонсор KATZY MUSIC",
-      "verified": true,
+      "verified": false,
       "role": "Спонсор",
       "avatar": "efichava.jpg",
       "badges": ["🎶 Музыкальный Критик", "💸 Спонсор"]
@@ -49,7 +49,7 @@
       "name": "Анна Шведцова",
       "username": "@anya",
       "status": "Стилист / Дизайнер KATZY MUSIC",
-      "verified": true,
+      "verified": false,
       "role": "Стилист / Дизайнер",
       "avatar": "anyaava.jpg",
       "badges": ["🪭 Мерч-Дизайнер", "👑 Иллюстратор"]
@@ -58,7 +58,7 @@
       "name": "Григорий Морозов",
       "username": "@grishanya",
       "status": "Главный Маркетолог KATZY MUSIC",
-      "verified": true,
+      "verified": false,
       "role": "Главный Маркетолог",
       "avatar": "grishaava.jpg",
       "badges": ["🎖 CMO", "📈 Отделение маркетинга и продвижения"]
