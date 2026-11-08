@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Katzy Music — Хаб</title>
+    <title>KATZY MUSIC — Хаб</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -28,11 +28,10 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding: 16px 16px 80px 16px; /* Отступ снизу под нижнюю панель */
+            padding: 16px 16px 80px 16px;
             overflow-x: hidden;
         }
 
-        /* Экраны */
         .screen {
             display: none;
             flex-direction: column;
@@ -133,7 +132,6 @@
             transition: color 0.2s ease;
         }
 
-        /* Награды / Достижения */
         .badges-container {
             width: 100%;
             display: flex;
@@ -152,14 +150,14 @@
             font-weight: 500;
         }
 
-        /* Список резидентов */
-        .residents-list {
+        /* Список руководства */
+        .team-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .resident-card {
+        .team-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
@@ -171,11 +169,11 @@
             transition: background 0.2s;
         }
 
-        .resident-card:active {
+        .team-card:active {
             background: rgba(255, 255, 255, 0.09);
         }
 
-        .resident-avatar {
+        .team-avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -183,34 +181,48 @@
             background: #1a2230;
         }
 
-        .resident-info {
+        .team-info {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 3px;
         }
 
-        .resident-name-row {
+        .team-name-row {
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .resident-title {
+        .team-title {
             font-size: 16px;
             font-weight: 600;
         }
 
-        .resident-desc {
+        .team-desc {
             font-size: 13px;
             color: var(--hint-color);
         }
 
-        /* Каталог */
+        /* Полный каталог релизов/услуг */
+        .catalog-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .catalog-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--hint-color);
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+
         .catalog-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .catalog-item {
@@ -267,13 +279,13 @@
             opacity: 0.9;
         }
 
-        /* Фиксированная нижняя панель навигации */
+        /* Нижняя панель навигации */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(13, 19, 30, 0.85);
+            background: rgba(13, 19, 30, 0.9);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-color);
@@ -309,7 +321,7 @@
 </head>
 <body>
 
-    <!-- ЭКРАН 1: Кошелек / Личный кабинет -->
+    <!-- ЭКРАН 1: Кошелек / Личный профиль -->
     <div id="screen-wallet" class="screen active">
         <div class="profile-container">
             <div class="avatar-wrapper">
@@ -320,17 +332,14 @@
                 <span id="user-verified" class="verified-badge" style="display: none;">✔</span>
             </div>
             <div class="user-tag" id="user-tag">@username</div>
-            <div class="user-status" id="user-status">Резидент Katzy Music</div>
+            <div class="user-status" id="user-status">Артист KATZY MUSIC</div>
 
             <div class="balance-section">
                 <span class="balance-label">Личный счет</span>
                 <div class="balance-amount" id="balance-container"><span id="user-balance">0</span> ₽</div>
             </div>
 
-            <!-- Достижения и награды -->
-            <div class="badges-container" id="user-badges">
-                <!-- Динамически загружаются медали -->
-            </div>
+            <div class="badges-container" id="user-badges"></div>
         </div>
 
         <div class="buttons-group">
@@ -339,38 +348,59 @@
         </div>
     </div>
 
-    <!-- ЭКРАН 2: Резиденты / Артисты -->
-    <div id="screen-residents" class="screen">
-        <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Резиденты лейбла</div>
-        <div class="residents-list" id="residents-container">
-            <!-- Список артистов -->
+    <!-- ЭКРАН 2: Руководство KATZY MUSIC (Список артистов/команды) -->
+    <div id="screen-team" class="screen">
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">Руководство KATZY MUSIC</div>
+        <div style="font-size: 13px; color: var(--hint-color); margin-bottom: 16px;">Команда и резиденты лейбла</div>
+        <div class="team-list" id="team-container"></div>
+    </div>
+
+    <!-- Детальный просмотр профиля участника из руководства -->
+    <div id="screen-member-detail" class="screen">
+        <button style="align-self: flex-start; background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 6px 14px; border-radius: 10px; font-size: 14px; cursor: pointer; margin-bottom: 16px;" onclick="switchScreen('team')">← Назад к списку</button>
+        <div class="profile-container" id="member-detail-content">
+            <!-- Динамически заполняется -->
         </div>
     </div>
 
-    <!-- ЭКРАН 3: Каталог услуг/релизов -->
+    <!-- ЭКРАН 3: Каталог -->
     <div id="screen-catalog" class="screen">
-        <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Каталог услуг</div>
-        <div class="catalog-grid">
-            <div class="catalog-item">
-                <div class="catalog-info">
-                    <h4>Сведение и Мастеринг</h4>
-                    <p>Профессиональная обработка трека</p>
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Каталог KATZY MUSIC</div>
+        <div class="catalog-container">
+            <div class="catalog-section-title">Продюсирование & Дистрибуция</div>
+            <div class="catalog-grid">
+                <div class="catalog-item">
+                    <div class="catalog-info">
+                        <h4>Сведение и Мастеринг</h4>
+                        <p>Профессиональная обработка звука</p>
+                    </div>
+                    <div class="catalog-price">3 500 ₽</div>
                 </div>
-                <div class="catalog-price">3 500 ₽</div>
+                <div class="catalog-item">
+                    <div class="catalog-info">
+                        <h4>Дистрибуция трека</h4>
+                        <p>Выгрузка на все площадки</p>
+                    </div>
+                    <div class="catalog-price">1 500 ₽</div>
+                </div>
             </div>
-            <div class="catalog-item">
-                <div class="catalog-info">
-                    <h4>Дистрибуция трека</h4>
-                    <p>Загрузка на все площадки</p>
+
+            <div class="catalog-section-title">Маркетинг & Продвижение</div>
+            <div class="catalog-grid">
+                <div class="catalog-item">
+                    <div class="catalog-info">
+                        <h4>Продвижение в TikTok / Reels</h4>
+                        <p>Настройка вирусных стратегий</p>
+                    </div>
+                    <div class="catalog-price">5 000 ₽</div>
                 </div>
-                <div class="catalog-price">1 500 ₽</div>
-            </div>
-            <div class="catalog-item">
-                <div class="catalog-info">
-                    <h4>Продвижение в Reels / TikTok</h4>
-                    <p>Маркетинговая стратегия</p>
+                <div class="catalog-item">
+                    <div class="catalog-info">
+                        <h4>Брендинг и Обложка</h4>
+                        <p>Минималистичный дизайн в стиле лейбла</p>
+                    </div>
+                    <div class="catalog-price">2 500 ₽</div>
                 </div>
-                <div class="catalog-price">5 000 ₽</div>
             </div>
         </div>
     </div>
@@ -381,9 +411,9 @@
             <span class="nav-icon">💳</span>
             <span>Кошелек</span>
         </button>
-        <button class="nav-item" id="nav-residents" onclick="switchScreen('residents')">
+        <button class="nav-item" id="nav-team" onclick="switchScreen('team')">
             <span class="nav-icon">⭐</span>
-            <span>Резиденты</span>
+            <span>Руководство</span>
         </button>
         <button class="nav-item" id="nav-catalog" onclick="switchScreen('catalog')">
             <span class="nav-icon">📦</span>
@@ -398,54 +428,64 @@
 
         const telegramUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
         let currentUserId = telegramUser ? String(telegramUser.id) : '6510148512';
-        let globalUsersData = {};
+        
+        let appData = {
+            balances: {},
+            team: {}
+        };
 
-        // Переключение экранов через нижнюю панель
         function switchScreen(screenName) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
 
             document.getElementById(`screen-${screenName}`).classList.add('active');
-            document.getElementById(`nav-${screenName}`).classList.add('active');
+            
+            if (screenName === 'wallet' || screenName === 'team') {
+                document.getElementById(`nav-${screenName}`).classList.add('active');
+            }
 
             if (screenName === 'wallet') {
-                renderProfile(currentUserId);
-            } else if (screenName === 'residents') {
-                renderResidentsList();
+                renderMyWallet(currentUserId);
+            } else if (screenName === 'team') {
+                renderTeamList();
             }
         }
 
-        // Загрузка данных
+        // Загрузка данных с GitHub
         fetch('balances.json?t=' + new Date().getTime())
             .then(response => response.json())
             .then(data => {
-                globalUsersData = data.users || {};
-                renderProfile(currentUserId);
-                renderResidentsList();
+                appData.balances = data.balances || {};
+                appData.team = data.team || {};
+                renderMyWallet(currentUserId);
+                renderTeamList();
             })
             .catch(error => console.error('Ошибка загрузки данных:', error));
 
-        // Отрисовка профиля в кошельке
-        function renderProfile(userId) {
-            const users = globalUsersData;
-            let userData = users[userId];
+        // Отрисовка личного кошелька текущего пользователя
+        function renderMyWallet(userId) {
+            let myName = 'Никита Сарычев';
+            let myTag = '@MoriartiInKatzy';
+            let myStatus = 'Директор KATZY MUSIC';
+            let isVerified = true;
+            let myBadges = ['🏆 Основатель', '💿 Платиновый релиз'];
 
-            if (!userData) {
-                userData = {
-                    name: telegramUser ? `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() : 'Гость',
-                    username: telegramUser && telegramUser.username ? `@${telegramUser.username}` : `@id_${userId}`,
-                    balance: 0,
-                    status: 'Резидент Katzy Music',
-                    verified: false,
-                    badges: ['🎵 Новичок']
-                };
+            if (appData.team[userId]) {
+                myName = appData.team[userId].name;
+                myTag = appData.team[userId].username;
+                myStatus = `${appData.team[userId].role} • ${appData.team[userId].status}`;
+                isVerified = appData.team[userId].verified;
+                myBadges = appData.team[userId].badges || [];
+            } else if (telegramUser && userId === String(telegramUser.id)) {
+                myName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim();
+                myTag = telegramUser.username ? `@${telegramUser.username}` : `ID: ${userId}`;
+                myStatus = 'Резидент KATZY MUSIC';
             }
 
-            document.getElementById('user-name').innerText = userData.name;
-            document.getElementById('user-tag').innerText = userData.username;
-            document.getElementById('user-status').innerText = `${userData.role || 'Артист'} • ${userData.status || 'В сети'}`;
-            
-            document.getElementById('user-verified').style.display = userData.verified ? 'inline' : 'none';
+            document.getElementById('user-name').innerText = myName;
+            document.getElementById('user-tag').innerText = myTag;
+            document.getElementById('user-status').innerText = myStatus;
+            document.getElementById('user-verified').style.display = isVerified ? 'inline' : 'none';
 
             if (telegramUser && userId === String(telegramUser.id) && telegramUser.photo_url) {
                 document.getElementById('user-avatar').src = telegramUser.photo_url;
@@ -453,7 +493,7 @@
                 document.getElementById('user-avatar').src = `https://picsum.photos/seed/${userId}/200`;
             }
 
-            let rawBalance = userData.balance;
+            let rawBalance = appData.balances[userId] !== undefined ? appData.balances[userId] : 0;
             let balanceEl = document.getElementById('user-balance');
             let balanceContainer = document.getElementById('balance-container');
 
@@ -464,54 +504,70 @@
 
             balanceContainer.style.color = Number(rawBalance) < 0 ? '#ff453a' : '#ffffff';
 
-            // Отрисовка наград/достижений
             const badgesContainer = document.getElementById('user-badges');
             badgesContainer.innerHTML = '';
-            if (userData.badges && userData.badges.length > 0) {
-                userData.badges.forEach(badge => {
-                    const chip = document.createElement('div');
-                    chip.className = 'badge-chip';
-                    chip.innerText = badge;
-                    badgesContainer.appendChild(chip);
-                });
-            }
+            myBadges.forEach(badge => {
+                const chip = document.createElement('div');
+                chip.className = 'badge-chip';
+                chip.innerText = badge;
+                badgesContainer.appendChild(chip);
+            });
         }
 
-        // Отрисовка списка резидентов
-        function renderResidentsList() {
-            const container = document.getElementById('residents-container');
+        // Отрисовка списка руководства/артистов (без кошельков!)
+        function renderTeamList() {
+            const container = document.getElementById('team-container');
             container.innerHTML = '';
 
-            for (const [id, user] of Object.entries(globalUsersData)) {
+            for (const [id, member] of Object.entries(appData.team)) {
                 const card = document.createElement('div');
-                card.className = 'resident-card';
-                card.onclick = () => {
-                    currentUserId = id;
-                    switchScreen('wallet');
-                };
-
-                let rawBalance = user.balance;
-                let formattedBalance = Number(rawBalance).toLocaleString('ru-RU', {
-                    minimumFractionDigits: rawBalance % 1 !== 0 ? 2 : 0,
-                    maximumFractionDigits: 2
-                }) + ' ₽';
+                card.className = 'team-card';
+                card.onclick = () => renderMemberDetail(id, member);
 
                 card.innerHTML = `
-                    <img class="resident-avatar" src="https://picsum.photos/seed/${id}/100" alt="Avatar">
-                    <div class="resident-info">
-                        <div class="resident-name-row">
-                            <span class="resident-title">${user.name}</span>
-                            ${user.verified ? '<span style="color: #007aff; font-size: 14px;">✔</span>' : ''}
+                    <img class="team-avatar" src="https://picsum.photos/seed/${id}/100" alt="Avatar">
+                    <div class="team-info">
+                        <div class="team-name-row">
+                            <span class="team-title">${member.name}</span>
+                            ${member.verified ? '<span style="color: #007aff; font-size: 14px;">✔</span>' : ''}
                         </div>
-                        <span class="resident-desc">${user.status}</span>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 14px; font-weight: 700; color: ${rawBalance < 0 ? '#ff453a' : 'inherit'}">${formattedBalance}</div>
-                        <span style="font-size: 11px; color: var(--hint-color);">${user.role || 'Артист'}</span>
+                        <span class="team-desc">${member.role} • ${member.status}</span>
                     </div>
                 `;
                 container.appendChild(card);
             }
+        }
+
+        // Открытие публичной карточки участника (без баланса!)
+        function renderMemberDetail(id, member) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-member-detail').classList.add('active');
+
+            const container = document.getElementById('member-detail-content');
+            
+            let badgesHtml = '';
+            if (member.badges) {
+                member.badges.forEach(b => {
+                    badgesHtml += `<div class="badge-chip">${b}</div>`;
+                });
+            }
+
+            container.innerHTML = `
+                <div class="avatar-wrapper">
+                    <img class="avatar-img" src="https://picsum.photos/seed/${id}/200" alt="Avatar">
+                </div>
+                <div class="user-name-row">
+                    <div class="user-name">${member.name}</div>
+                    ${member.verified ? '<span class="verified-badge">✔</span>' : ''}
+                </div>
+                <div class="user-tag">${member.username}</div>
+                <div class="user-status">${member.role} • ${member.status}</div>
+
+                <div style="font-size: 15px; font-weight: 600; margin-bottom: 12px; color: var(--hint-color);">Достижения и награды</div>
+                <div class="badges-container">
+                    ${badgesHtml}
+                </div>
+            `;
         }
 
         function requestAction(type) {
