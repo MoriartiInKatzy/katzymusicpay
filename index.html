@@ -87,9 +87,13 @@
             text-align: center;
         }
 
-        .verified-badge {
-            color: #007aff;
-            font-size: 18px;
+        /* Кастомная картинка-галочка */
+        .custom-verified-badge {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         .user-tag {
@@ -204,51 +208,123 @@
             color: var(--hint-color);
         }
 
-        /* Полный каталог релизов/услуг */
-        .catalog-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .catalog-section-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--hint-color);
-            margin-top: 8px;
-            margin-bottom: 4px;
-        }
-
+        /* Каталог с карточками и картинками */
         .catalog-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
         }
 
-        .catalog-item {
+        .catalog-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .catalog-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            background: #1a2230;
+        }
+
+        .catalog-content {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .catalog-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .catalog-desc {
+            font-size: 13px;
+            color: var(--hint-color);
+            line-height: 1.4;
+        }
+
+        .catalog-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 10px;
+        }
+
+        .catalog-price {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .add-to-cart-btn {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .add-to-cart-btn:active {
+            opacity: 0.8;
+        }
+
+        /* Корзина */
+        .cart-section {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
             padding: 16px;
+            margin-top: 10px;
+        }
+
+        .cart-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .catalog-info h4 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 4px;
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
-        .catalog-info p {
-            font-size: 13px;
-            color: var(--hint-color);
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 8px 12px;
+            border-radius: 10px;
         }
 
-        .catalog-price {
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
             font-size: 16px;
             font-weight: 700;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+            margin-bottom: 14px;
         }
 
         /* Кнопки */
@@ -321,7 +397,7 @@
 </head>
 <body>
 
-    <!-- ЭКРАН 1: Кошелек / Личный профиль -->
+    <!-- ЭКРАН 1: Кошелек -->
     <div id="screen-wallet" class="screen active">
         <div class="profile-container">
             <div class="avatar-wrapper">
@@ -329,7 +405,7 @@
             </div>
             <div class="user-name-row">
                 <div class="user-name" id="user-name">Загрузка...</div>
-                <span id="user-verified" class="verified-badge" style="display: none;">✔</span>
+                <img id="user-verified" class="custom-verified-badge" src="badge.png" alt="✔" style="display: none;" onerror="this.style.display='none'">
             </div>
             <div class="user-tag" id="user-tag">@username</div>
             <div class="user-status" id="user-status">Артист KATZY MUSIC</div>
@@ -348,60 +424,76 @@
         </div>
     </div>
 
-    <!-- ЭКРАН 2: Руководство KATZY MUSIC (Список артистов/команды) -->
+    <!-- ЭКРАН 2: Руководство KATZY MUSIC -->
     <div id="screen-team" class="screen">
         <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">Руководство KATZY MUSIC</div>
         <div style="font-size: 13px; color: var(--hint-color); margin-bottom: 16px;">Команда и резиденты лейбла</div>
         <div class="team-list" id="team-container"></div>
     </div>
 
-    <!-- Детальный просмотр профиля участника из руководства -->
+    <!-- Детальный профиль участника -->
     <div id="screen-member-detail" class="screen">
         <button style="align-self: flex-start; background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 6px 14px; border-radius: 10px; font-size: 14px; cursor: pointer; margin-bottom: 16px;" onclick="switchScreen('team')">← Назад к списку</button>
-        <div class="profile-container" id="member-detail-content">
-            <!-- Динамически заполняется -->
-        </div>
+        <div class="profile-container" id="member-detail-content"></div>
     </div>
 
-    <!-- ЭКРАН 3: Каталог -->
+    <!-- ЭКРАН 3: Каталог с картинками и корзиной -->
     <div id="screen-catalog" class="screen">
         <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Каталог KATZY MUSIC</div>
-        <div class="catalog-container">
-            <div class="catalog-section-title">Продюсирование & Дистрибуция</div>
-            <div class="catalog-grid">
-                <div class="catalog-item">
-                    <div class="catalog-info">
-                        <h4>Сведение и Мастеринг</h4>
-                        <p>Профессиональная обработка звука</p>
+        
+        <!-- Карточки товаров -->
+        <div class="catalog-grid" id="catalog-grid-container">
+            <div class="catalog-card">
+                <img class="catalog-img" src="https://picsum.photos/seed/mixing/400/200" alt="Сведение">
+                <div class="catalog-content">
+                    <div class="catalog-title">Сведение и Мастеринг</div>
+                    <div class="catalog-desc">Профессиональная обработка звука под современные стандарты стримингов.</div>
+                    <div class="catalog-footer">
+                        <span class="catalog-price">3 500 ₽</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('Сведение и Мастеринг', 3500)">В корзину</button>
                     </div>
-                    <div class="catalog-price">3 500 ₽</div>
-                </div>
-                <div class="catalog-item">
-                    <div class="catalog-info">
-                        <h4>Дистрибуция трека</h4>
-                        <p>Выгрузка на все площадки</p>
-                    </div>
-                    <div class="catalog-price">1 500 ₽</div>
                 </div>
             </div>
 
-            <div class="catalog-section-title">Маркетинг & Продвижение</div>
-            <div class="catalog-grid">
-                <div class="catalog-item">
-                    <div class="catalog-info">
-                        <h4>Продвижение в TikTok / Reels</h4>
-                        <p>Настройка вирусных стратегий</p>
+            <div class="catalog-card">
+                <img class="catalog-img" src="https://picsum.photos/seed/distrib/400/200" alt="Дистрибуция">
+                <div class="catalog-content">
+                    <div class="catalog-title">Дистрибуция трека</div>
+                    <div class="catalog-desc">Загрузка релиза на VK Музыка, Яндекс Мьюзик, Apple Music и Spotify.</div>
+                    <div class="catalog-footer">
+                        <span class="catalog-price">1 500 ₽</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('Дистрибуция трека', 1500)">В корзину</button>
                     </div>
-                    <div class="catalog-price">5 000 ₽</div>
-                </div>
-                <div class="catalog-item">
-                    <div class="catalog-info">
-                        <h4>Брендинг и Обложка</h4>
-                        <p>Минималистичный дизайн в стиле лейбла</p>
-                    </div>
-                    <div class="catalog-price">2 500 ₽</div>
                 </div>
             </div>
+
+            <div class="catalog-card">
+                <img class="catalog-img" src="https://picsum.photos/seed/promo/400/200" alt="Продвижение">
+                <div class="catalog-content">
+                    <div class="catalog-title">Продвижение в TikTok / Reels</div>
+                    <div class="catalog-desc">Настройка вирусных маркетинговых кампаний для продвижения сниппетов.</div>
+                    <div class="catalog-footer">
+                        <span class="catalog-price">5 000 ₽</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('Продвижение TikTok/Reels', 5000)">В корзину</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок корзины -->
+        <div class="cart-section">
+            <div class="cart-title">
+                <span>Корзина заказа</span>
+                <span id="cart-count" style="font-size: 13px; color: var(--hint-color);">0 товаров</span>
+            </div>
+            <div class="cart-items" id="cart-items-container">
+                <div style="color: var(--hint-color); font-size: 13px; text-align: center; padding: 10px;">Корзина пуста</div>
+            </div>
+            <div class="cart-total">
+                <span>Итого:</span>
+                <span id="cart-total-price">0 ₽</span>
+            </div>
+            <button class="action-btn" onclick="checkoutCart()">Оформить заказ в чате</button>
         </div>
     </div>
 
@@ -429,10 +521,8 @@
         const telegramUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
         let currentUserId = telegramUser ? String(telegramUser.id) : '6510148512';
         
-        let appData = {
-            balances: {},
-            team: {}
-        };
+        let appData = { balances: {}, team: {} };
+        let cart = [];
 
         function switchScreen(screenName) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -440,18 +530,14 @@
 
             document.getElementById(`screen-${screenName}`).classList.add('active');
             
-            if (screenName === 'wallet' || screenName === 'team') {
+            if (screenName === 'wallet' || screenName === 'team' || screenName === 'catalog') {
                 document.getElementById(`nav-${screenName}`).classList.add('active');
             }
 
-            if (screenName === 'wallet') {
-                renderMyWallet(currentUserId);
-            } else if (screenName === 'team') {
-                renderTeamList();
-            }
+            if (screenName === 'wallet') renderMyWallet(currentUserId);
+            else if (screenName === 'team') renderTeamList();
         }
 
-        // Загрузка данных с GitHub
         fetch('balances.json?t=' + new Date().getTime())
             .then(response => response.json())
             .then(data => {
@@ -462,7 +548,6 @@
             })
             .catch(error => console.error('Ошибка загрузки данных:', error));
 
-        // Отрисовка личного кошелька текущего пользователя
         function renderMyWallet(userId) {
             let myName = 'Никита Сарычев';
             let myTag = '@MoriartiInKatzy';
@@ -485,7 +570,7 @@
             document.getElementById('user-name').innerText = myName;
             document.getElementById('user-tag').innerText = myTag;
             document.getElementById('user-status').innerText = myStatus;
-            document.getElementById('user-verified').style.display = isVerified ? 'inline' : 'none';
+            document.getElementById('user-verified').style.display = isVerified ? 'inline-block' : 'none';
 
             if (telegramUser && userId === String(telegramUser.id) && telegramUser.photo_url) {
                 document.getElementById('user-avatar').src = telegramUser.photo_url;
@@ -514,7 +599,6 @@
             });
         }
 
-        // Отрисовка списка руководства/артистов (без кошельков!)
         function renderTeamList() {
             const container = document.getElementById('team-container');
             container.innerHTML = '';
@@ -529,7 +613,7 @@
                     <div class="team-info">
                         <div class="team-name-row">
                             <span class="team-title">${member.name}</span>
-                            ${member.verified ? '<span style="color: #007aff; font-size: 14px;">✔</span>' : ''}
+                            ${member.verified ? '<img src="badge.png" style="width: 14px; height: 14px; object-fit: contain;" onerror="this.style.display=\'none\'">' : ''}
                         </div>
                         <span class="team-desc">${member.role} • ${member.status}</span>
                     </div>
@@ -538,18 +622,14 @@
             }
         }
 
-        // Открытие публичной карточки участника (без баланса!)
         function renderMemberDetail(id, member) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-member-detail').classList.add('active');
 
             const container = document.getElementById('member-detail-content');
-            
             let badgesHtml = '';
             if (member.badges) {
-                member.badges.forEach(b => {
-                    badgesHtml += `<div class="badge-chip">${b}</div>`;
-                });
+                member.badges.forEach(b => { badgesHtml += `<div class="badge-chip">${b}</div>`; });
             }
 
             container.innerHTML = `
@@ -558,16 +638,70 @@
                 </div>
                 <div class="user-name-row">
                     <div class="user-name">${member.name}</div>
-                    ${member.verified ? '<span class="verified-badge">✔</span>' : ''}
+                    ${member.verified ? '<img src="badge.png" class="custom-verified-badge" onerror="this.style.display=\'none\'">' : ''}
                 </div>
                 <div class="user-tag">${member.username}</div>
                 <div class="user-status">${member.role} • ${member.status}</div>
 
                 <div style="font-size: 15px; font-weight: 600; margin-bottom: 12px; color: var(--hint-color);">Достижения и награды</div>
-                <div class="badges-container">
-                    ${badgesHtml}
-                </div>
+                <div class="badges-container">${badgesHtml}</div>
             `;
+        }
+
+        // Логика корзины
+        function addToCart(title, price) {
+            cart.push({ title, price });
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const countEl = document.getElementById('cart-count');
+            const totalEl = document.getElementById('cart-total-price');
+
+            container.innerHTML = '';
+            if (cart.length === 0) {
+                container.innerHTML = '<div style="color: var(--hint-color); font-size: 13px; text-align: center; padding: 10px;">Корзина пуста</div>';
+                countEl.innerText = '0 товаров';
+                totalEl.innerText = '0 ₽';
+                return;
+            }
+
+            countEl.innerText = `${cart.length} тов.`;
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <span>${item.title}</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${item.price.toLocaleString()} ₽</span>
+                        <span style="color: #ff453a; cursor: pointer; font-weight: bold;" onclick="removeFromCart(${index})">✕</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            totalEl.innerText = total.toLocaleString() + ' ₽';
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                alert('Корзина пуста!');
+                return;
+            }
+            let textList = cart.map(i => `• ${i.name || i.title} — ${i.price} ₽`).join('\n');
+            let totalSum = cart.reduce((sum, i) => sum + i.price, 0);
+            
+            const message = encodeURIComponent(`Привет! Хочу оформить заказ в KATZY MUSIC:\n\n${textList}\n\nСумма к оплате: ${totalSum} ₽\nМой ID: ${currentUserId}`);
+            tg.openTelegramLink(`https://t.me/katzy_music?text=${message}`);
         }
 
         function requestAction(type) {
