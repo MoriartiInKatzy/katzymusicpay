@@ -49,28 +49,25 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Шапка разделов */
+        /* Шапка с местом под логотип */
         .app-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
+            height: 36px;
+            margin-bottom: 16px;
             padding: 0 4px;
         }
 
-        .app-logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .header-logo {
+            height: 28px;
+            max-width: 160px;
+            object-fit: contain;
+        }
+
+        .header-fallback-title {
             font-weight: 700;
             font-size: 16px;
             letter-spacing: 0.3px;
-        }
-
-        .app-logo-icon {
-            width: 22px;
-            height: 22px;
-            object-fit: contain;
         }
 
         /* Профиль / Кошелек */
@@ -137,7 +134,7 @@
             text-align: center;
         }
 
-        /* Блок счета */
+        /* Блок счета с красивым символом карты */
         .account-card-ref {
             width: 100%;
             background: var(--card-bg);
@@ -156,13 +153,22 @@
             gap: 12px;
         }
 
-        .account-mini-preview {
+        .card-icon-wrapper {
             width: 44px;
             height: 32px;
-            border-radius: 6px;
-            object-fit: cover;
-            background: #1a2230;
-            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .card-icon-wrapper svg {
+            width: 22px;
+            height: 22px;
+            fill: #ffffff;
         }
 
         .account-info {
@@ -452,9 +458,7 @@
     <!-- ЭКРАН 1: Кошелек -->
     <div id="screen-wallet" class="screen active">
         <header class="app-header">
-            <div class="app-logo-area">
-                <span>Katzy Music | Service</span>
-            </div>
+            <img class="header-logo" src="wallet_logo.png" alt="Logo" onerror="this.outerHTML='<span class=\'header-fallback-title\'>Katzy Music | Service</span>'">
         </header>
 
         <div class="profile-container">
@@ -467,12 +471,15 @@
             <div class="user-tag" id="user-tag">@username</div>
             <div class="user-status" id="user-status">Пользователь</div>
 
+            <!-- Блок счета с символом банковской карты и форматом OFX#ID -->
             <div class="account-card-ref">
                 <div class="account-left">
-                    <img class="account-mini-preview" src="cover.jpg" alt="Card" onerror="this.src='https://picsum.photos/50'">
+                    <div class="card-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                    </div>
                     <div class="account-info">
                         <span class="account-title">Katzy Music | Payments</span>
-                        <span class="account-id" id="account-user-id">ID: ...</span>
+                        <span class="account-id" id="account-user-id">KATZY MUSIC OFX#...</span>
                     </div>
                 </div>
                 <div class="account-balance" id="balance-container"><span id="user-balance">0</span> ₽</div>
@@ -487,34 +494,27 @@
         </div>
     </div>
 
-    <!-- ЭКРАН 2: Katzy Music Team -->
+    <!-- ЭКРАН 2: Команда -->
     <div id="screen-team" class="screen">
         <header class="app-header">
-            <div class="app-logo-area">
-                <span>Katzy Music Team</span>
-            </div>
+            <img class="header-logo" src="team_logo.png" alt="Logo" onerror="this.outerHTML='<span class=\'header-fallback-title\'>Katzy Music Team</span>'">
         </header>
-        <div style="font-size: 13px; color: var(--hint-color); margin-bottom: 16px; padding: 0 4px;">Руководство и команда лейбла</div>
-        <div class="team-list" id="team-container"></div>
+        <div class="team-list" id="team-container" style="margin-top: 8px;"></div>
     </div>
 
     <!-- Детальный профиль участника команды -->
     <div id="screen-member-detail" class="screen">
         <header class="app-header">
-            <div class="app-logo-area">
-                <span>Katzy Music | Profile</span>
-            </div>
+            <img class="header-logo" src="team_logo.png" alt="Logo" onerror="this.outerHTML='<span class=\'header-fallback-title\'>Katzy Music | Profile</span>'">
         </header>
         <button style="align-self: flex-start; background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 6px 14px; border-radius: 10px; font-size: 14px; cursor: pointer; margin-bottom: 16px;" onclick="switchScreen('team')">← Назад к команде</button>
         <div class="profile-container" id="member-detail-content"></div>
     </div>
 
-    <!-- ЭКРАN 3: Каталог -->
+    <!-- ЭКРАН 3: Каталог (с пустой шапкой под логотип) -->
     <div id="screen-catalog" class="screen">
         <header class="app-header">
-            <div class="app-logo-area">
-                <span>Katzy Music | Catalog</span>
-            </div>
+            <img class="header-logo" src="catalog_logo.png" alt="Logo" onerror="this.outerHTML='<span class=\'header-fallback-title\' style=\'display:none;\'></span>'">
         </header>
         
         <div class="catalog-grid" id="catalog-grid-container">
@@ -662,8 +662,8 @@
             document.getElementById('user-tag').innerText = myTag;
             document.getElementById('user-status').innerText = myStatus;
 
-            // Подставляем реальный Telegram ID вместо звездочек
-            document.getElementById('account-user-id').innerText = `ID: ${userId}`;
+            // Вывод ID в нужном формате KATZY MUSIC OFX#ID
+            document.getElementById('account-user-id').innerText = `KATZY MUSIC OFX#${userId}`;
 
             let rawBalance = appData.balances[userId] !== undefined ? appData.balances[userId] : 0;
             let balanceEl = document.getElementById('user-balance');
@@ -784,7 +784,7 @@
 
         function requestAction(type) {
             const text = encodeURIComponent(`Привет! Хочу ${type === 'Пополнить' ? 'пополнить счет' : 'вывести средства'} в KATZY MUSIC. Мой ID: ${currentUserId}`);
-            tg.openTelegramLink(`https://t.me/katzy_music?text=${message}`);
+            tg.openTelegramLink(`https://t.me/katzy_music?text=${text}`);
         }
     </script>
 </body>
