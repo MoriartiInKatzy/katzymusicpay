@@ -49,12 +49,37 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Шапка с логотипом (референс) */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 4px;
+        }
+
+        .app-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .app-logo-img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
         /* Профиль / Кошелек */
         .profile-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .avatar-wrapper {
@@ -113,27 +138,55 @@
             text-align: center;
         }
 
-        .balance-section {
+        /* Новый дизайн счета по референсу со скриншота */
+        .account-card-ref {
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px 16px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
             margin-bottom: 24px;
         }
 
-        .balance-label {
-            font-size: 15px;
-            color: var(--hint-color);
-            font-weight: 500;
+        .account-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .balance-amount {
-            font-size: 42px;
+        .account-mini-preview {
+            width: 44px;
+            height: 32px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: #1a2230;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .account-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .account-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .account-id {
+            font-size: 12px;
+            color: var(--hint-color);
+            font-family: monospace;
+        }
+
+        .account-balance {
+            font-size: 20px;
             font-weight: 800;
-            letter-spacing: -1px;
-            color: #ffffff;
-            line-height: 1.1;
-            transition: color 0.2s ease;
+            letter-spacing: -0.5px;
         }
 
         .badges-container {
@@ -208,7 +261,7 @@
             color: var(--hint-color);
         }
 
-        /* Каталог с карточками и корзиной */
+        /* Каталог */
         .catalog-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -399,6 +452,14 @@
 
     <!-- ЭКРАН 1: Кошелек -->
     <div id="screen-wallet" class="screen active">
+        <!-- Шапка с логотипом по референсу -->
+        <header class="app-header">
+            <div class="app-logo-area">
+                <img class="app-logo-img" src="badge.png" alt="Logo" onerror="this.src='https://picsum.photos/50'">
+                <span>Katzy Music | Service</span>
+            </div>
+        </header>
+
         <div class="profile-container">
             <div class="avatar-wrapper">
                 <img class="avatar-img" id="user-avatar" src="https://picsum.photos/200" alt="Avatar">
@@ -410,12 +471,18 @@
             <div class="user-tag" id="user-tag">@username</div>
             <div class="user-status" id="user-status">Пользователь</div>
 
-            <div class="balance-section">
-                <span class="balance-label">Личный счет</span>
-                <div class="balance-amount" id="balance-container"><span id="user-balance">0</span> ₽</div>
+            <!-- Новый блок счета по референсу со скриншота -->
+            <div class="account-card-ref">
+                <div class="account-left">
+                    <img class="account-mini-preview" src="cover.jpg" alt="Card" onerror="this.src='https://picsum.photos/50'">
+                    <div class="account-info">
+                        <span class="account-title">Katzy Music | Payments</span>
+                        <span class="account-id" id="account-user-id">ID: ...</span>
+                    </div>
+                </div>
+                <div class="account-balance" id="balance-container"><span id="user-balance">0</span> ₽</div>
             </div>
 
-            <!-- У обычных пользователей достижений нет -->
             <div class="badges-container" id="user-badges" style="display: none;"></div>
         </div>
 
@@ -427,20 +494,36 @@
 
     <!-- ЭКРАН 2: Katzy Music Team -->
     <div id="screen-team" class="screen">
-        <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">Katzy Music Team</div>
-        <div style="font-size: 13px; color: var(--hint-color); margin-bottom: 16px;">Руководство и команда лейбла</div>
+        <header class="app-header">
+            <div class="app-logo-area">
+                <img class="app-logo-img" src="badge.png" alt="Logo" onerror="this.src='https://picsum.photos/50'">
+                <span>Katzy Music Team</span>
+            </div>
+        </header>
+        <div style="font-size: 13px; color: var(--hint-color); margin-bottom: 16px; padding: 0 4px;">Руководство и команда лейбла</div>
         <div class="team-list" id="team-container"></div>
     </div>
 
     <!-- Детальный профиль участника команды -->
     <div id="screen-member-detail" class="screen">
+        <header class="app-header">
+            <div class="app-logo-area">
+                <img class="app-logo-img" src="badge.png" alt="Logo" onerror="this.src='https://picsum.photos/50'">
+                <span>Katzy Music | Profile</span>
+            </div>
+        </header>
         <button style="align-self: flex-start; background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 6px 14px; border-radius: 10px; font-size: 14px; cursor: pointer; margin-bottom: 16px;" onclick="switchScreen('team')">← Назад к команде</button>
         <div class="profile-container" id="member-detail-content"></div>
     </div>
 
-    <!-- ЭКРАН 3: Каталог с картинками и корзиной -->
+    <!-- ЭКРАН 3: Каталог -->
     <div id="screen-catalog" class="screen">
-        <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Каталог KATZY MUSIC</div>
+        <header class="app-header">
+            <div class="app-logo-area">
+                <img class="app-logo-img" src="badge.png" alt="Logo" onerror="this.src='https://picsum.photos/50'">
+                <span>Katzy Music | Catalog</span>
+            </div>
+        </header>
         
         <div class="catalog-grid" id="catalog-grid-container">
             <div class="catalog-card">
@@ -586,7 +669,10 @@
             document.getElementById('user-name').innerText = myName;
             document.getElementById('user-tag').innerText = myTag;
             document.getElementById('user-status').innerText = myStatus;
-            document.getElementById('user-verified').style.display = 'none'; // У обычных пользователей галочки нет
+            document.getElementById('user-verified').style.display = 'none';
+
+            // Подставляем реальный Telegram ID вместо звездочек
+            document.getElementById('account-user-id').innerText = `ID: ${userId}`;
 
             let rawBalance = appData.balances[userId] !== undefined ? appData.balances[userId] : 0;
             let balanceEl = document.getElementById('user-balance');
@@ -679,7 +765,7 @@
             cart.forEach((item, index) => {
                 total += item.price;
                 const div = document.createElement('div');
-                div.className = 'cart-item';
+                div.className, 'cart-item';
                 div.innerHTML = `
                     <span>${item.title}</span>
                     <div style="display: flex; align-items: center; gap: 10px;">
