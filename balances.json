@@ -2,16 +2,19 @@
   "settings": {
     "label_name": "KATZY MUSIC"
   },
+  "admins": [
+    "6510148512"
+  ],
   "balances": {
     "6510148512": 4261,
-    "1443013111": -8115.77,
+    "1443013111": -11215.77,
     "7929397053": 42371,
     "8974335043": -17261.18
   },
   "team": {
     "katzy_ceo": {
       "name": "Katzy",
-      "username": "@Katzy",
+      "username": "@MoriartiInKatzy",
       "status": "Генеральный Директор KATZY MUSIC",
       "verified": true,
       "role": "Генеральный Директор",
@@ -20,7 +23,7 @@
     },
     "lesha_team": {
       "name": "Алексей Мясников",
-      "username": "@Alexeych",
+      "username": "@lesha_myasnikov",
       "status": "Заместитель Генерального Директора KATZY MUSIC",
       "verified": true,
       "role": "Заместитель Ген. Директора",
@@ -31,34 +34,34 @@
       "name": "Александр Грин",
       "username": "@grin_finance",
       "status": "Финансовый Управляющий KATZY MUSIC",
-      "verified": false,
+      "verified": true,
       "role": "Финансовый Управляющий",
       "avatar": "grinava.jpg",
       "badges": ["🎖 CCO", "⚡️ Высшее Руководство", "👤 Юридический Отдел"]
     },
     "efich_team": {
       "name": "Владимир Ефимов",
-      "username": "@efimich",
+      "username": "@efich_sponsor",
       "status": "Спонсор KATZY MUSIC",
-      "verified": false,
+      "verified": true,
       "role": "Спонсор",
       "avatar": "efichava.jpg",
       "badges": ["🎶 Музыкальный Критик", "💸 Спонсор"]
     },
     "anya_team": {
       "name": "Анна Шведцова",
-      "username": "@anya",
+      "username": "@anya_style",
       "status": "Стилист / Дизайнер KATZY MUSIC",
-      "verified": false,
+      "verified": true,
       "role": "Стилист / Дизайнер",
       "avatar": "anyaava.jpg",
       "badges": ["🪭 Мерч-Дизайнер", "👑 Иллюстратор"]
     },
     "grisha_team": {
       "name": "Григорий Морозов",
-      "username": "@grishanya",
+      "username": "@grisha_cmo",
       "status": "Главный Маркетолог KATZY MUSIC",
-      "verified": false,
+      "verified": true,
       "role": "Главный Маркетолог",
       "avatar": "grishaava.jpg",
       "badges": ["🎖 CMO", "📈 Отделение маркетинга и продвижения"]
@@ -74,11 +77,11 @@
     },
     "vika_team": {
       "name": "Виктория Космодемьянская",
-      "username": "@vika21",
+      "username": "@vika_manager",
       "status": "Менеджер KATZY MUSIC",
       "verified": false,
       "role": "Менеджер Артистов",
-      "avatar": "vikaava.jpg",
+      "avatar": "Vikaava.jpg",
       "badges": ["👤 Менеджер Артистов"]
     }
   }
