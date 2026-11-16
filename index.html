@@ -13,6 +13,7 @@
             --text-color: #ffffff;
             --hint-color: #8b96a5;
             --danger-color: #ff453a;
+            --success-color: #34c759;
         }
 
         * {
@@ -49,7 +50,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Увеличенная шапка под логотипы */
+        /* Шапка под логотипы */
         .app-header {
             display: flex;
             align-items: center;
@@ -136,7 +137,7 @@
             text-align: center;
         }
 
-        /* Премиальная платежная карта */
+        /* Премиальная карта счета */
         .payment-card-premium {
             width: 100%;
             background: linear-gradient(135deg, #1b2434 0%, #101622 60%, #172030 100%);
@@ -150,17 +151,6 @@
             display: flex;
             flex-direction: column;
             gap: 18px;
-        }
-
-        .payment-card-premium::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
-            pointer-events: none;
         }
 
         .card-top-row {
@@ -300,6 +290,69 @@
         .team-desc {
             font-size: 13px;
             color: var(--hint-color);
+        }
+
+        /* Админ-панель стили */
+        .admin-section {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 69, 58, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .admin-section-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #ff453a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            color: var(--hint-color);
+            font-weight: 500;
+        }
+
+        .form-input, .form-select {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: #ffffff;
+        }
+
+        .admin-btn {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .admin-btn:active {
+            opacity: 0.8;
         }
 
         /* Каталог */
@@ -449,7 +502,7 @@
             opacity: 0.9;
         }
 
-        /* Нижняя панель навигации */
+        /* Нижняя панель навигации (4 вкладки) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -473,7 +526,7 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
             cursor: pointer;
             flex: 1;
@@ -485,7 +538,7 @@
         }
 
         .nav-icon {
-            font-size: 20px;
+            font-size: 18px;
         }
     </style>
 </head>
@@ -507,7 +560,7 @@
             <div class="user-tag" id="user-tag">@username</div>
             <div class="user-status" id="user-status">Пользователь</div>
 
-            <!-- Обновленная премиум-карта счета -->
+            <!-- Премиальная карта счета -->
             <div class="payment-card-premium">
                 <div class="card-top-row">
                     <span class="card-brand-label">Katzy Music | Payments</span>
@@ -633,6 +686,59 @@
         </div>
     </div>
 
+    <!-- ЭКРАН 4: Админ-панель (доступна только администраторам) -->
+    <div id="screen-admin" class="screen">
+        <header class="app-header">
+            <span class="header-fallback-title" style="color: #ff453a;">🛡️ Katzy Music | Admin</span>
+        </header>
+
+        <!-- Блок 1: Управление балансами -->
+        <div class="admin-section">
+            <div class="admin-section-title">💳 Управление балансом счета</div>
+            <div class="form-group">
+                <label class="form-label">Telegram ID пользователя</label>
+                <input type="text" id="admin-target-id" class="form-input" placeholder="Например: 6510148512">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Сумма (₽)</label>
+                <input type="number" id="admin-target-amount" class="form-input" placeholder="Например: 5000 или -1000">
+            </div>
+            <button class="admin-btn" onclick="adminUpdateBalance()">Применить изменение баланса</button>
+        </div>
+
+        <!-- Блок 2: Быстрое редактирование сотрудников -->
+        <div class="admin-section">
+            <div class="admin-section-title">⭐ Управление командой</div>
+            <div class="form-group">
+                <label class="form-label">Выберите сотрудника</label>
+                <select id="admin-select-member" class="form-select" onchange="adminLoadMemberData()">
+                    <!-- Динамически заполняется -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Имя</label>
+                <input type="text" id="admin-member-name" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Статус</label>
+                <input type="text" id="admin-member-status" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Роль</label>
+                <input type="text" id="admin-member-role" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Имя файла аватара (например: katzyava.jpg)</label>
+                <input type="text" id="admin-member-avatar" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Награды / Достижения (через запятую)</label>
+                <input type="text" id="admin-member-badges" class="form-input" placeholder="🎖 CEO, ⚡️ Высшее Руководство">
+            </div>
+            <button class="admin-btn" onclick="adminSaveMember()">Сохранить изменения сотрудника</button>
+        </div>
+    </div>
+
     <!-- Нижняя панель навигации -->
     <nav class="bottom-nav">
         <button class="nav-item active" id="nav-wallet" onclick="switchScreen('wallet')">
@@ -647,6 +753,11 @@
             <span class="nav-icon">📦</span>
             <span>Каталог</span>
         </button>
+        <!-- Кнопка админки (скрыта для обычных пользователей) -->
+        <button class="nav-item" id="nav-admin" onclick="switchScreen('admin')" style="display: none;">
+            <span class="nav-icon">🛡️</span>
+            <span>Админ</span>
+        </button>
     </nav>
 
     <script>
@@ -657,7 +768,7 @@
         const telegramUser = tg.initDataUnsafe && tg.initDataUnsafe.user;
         let currentUserId = telegramUser ? String(telegramUser.id) : '6510148512';
         
-        let appData = { balances: {}, team: {} };
+        let appData = { settings: {}, admins: [], balances: {}, team: {} };
         let cart = [];
 
         function switchScreen(screenName) {
@@ -666,19 +777,28 @@
 
             document.getElementById(`screen-${screenName}`).classList.add('active');
             
-            if (screenName === 'wallet' || screenName === 'team' || screenName === 'catalog') {
+            if (document.getElementById(`nav-${screenName}`)) {
                 document.getElementById(`nav-${screenName}`).classList.add('active');
             }
 
             if (screenName === 'wallet') renderMyWallet(currentUserId);
             else if (screenName === 'team') renderTeamList();
+            else if (screenName === 'admin') initAdminPanel();
         }
 
         fetch('balances.json?t=' + new Date().getTime())
             .then(response => response.json())
             .then(data => {
+                appData.settings = data.settings || {};
+                appData.admins = data.admins || [];
                 appData.balances = data.balances || {};
                 appData.team = data.team || {};
+
+                // Проверка прав администратора
+                if (appData.admins.includes(currentUserId)) {
+                    document.getElementById('nav-admin').style.display = 'flex';
+                }
+
                 renderMyWallet(currentUserId);
                 renderTeamList();
             })
@@ -698,7 +818,6 @@
             document.getElementById('user-name').innerText = myName;
             document.getElementById('user-tag').innerText = myTag;
             document.getElementById('user-status').innerText = myStatus;
-
             document.getElementById('account-user-id').innerText = `KATZY MUSIC OFX#${userId}`;
 
             let rawBalance = appData.balances[userId] !== undefined ? appData.balances[userId] : 0;
@@ -760,6 +879,70 @@
                 <div style="font-size: 15px; font-weight: 600; margin-bottom: 12px; color: var(--hint-color);">Достижения и награды</div>
                 <div class="badges-container">${badgesHtml}</div>
             `;
+        }
+
+        // --- ЛОГИКА АДМИН-ПАНЕЛИ ---
+        function initAdminPanel() {
+            const selectEl = document.getElementById('admin-select-member');
+            selectEl.innerHTML = '';
+
+            for (const [key, member] of Object.entries(appData.team)) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.innerText = `${member.name} (${member.role})`;
+                selectEl.appendChild(option);
+            }
+            adminLoadMemberData();
+        }
+
+        function adminLoadMemberData() {
+            const key = document.getElementById('admin-select-member').value;
+            const member = appData.team[key];
+            if (!member) return;
+
+            document.getElementById('admin-member-name').value = member.name || '';
+            document.getElementById('admin-member-status').value = member.status || '';
+            document.getElementById('admin-member-role').value = member.role || '';
+            document.getElementById('admin-member-avatar').value = member.avatar || '';
+            document.getElementById('admin-member-badges').value = member.badges ? member.badges.join(', ') : '';
+        }
+
+        function adminUpdateBalance() {
+            const targetId = document.getElementById('admin-target-id').value.trim();
+            const amount = parseFloat(document.getElementById('admin-target-amount').value);
+
+            if (!targetId || isNaN(amount)) {
+                alert('Введите корректный ID и сумму!');
+                return;
+            }
+
+            if (appData.balances[targetId] === undefined) {
+                appData.balances[targetId] = 0;
+            }
+
+            appData.balances[targetId] += amount;
+            alert(`Баланс пользователя ${targetId} успешно изменен на ${amount} ₽!\nТекущий баланс: ${appData.balances[targetId]} ₽\n\n(Не забудьте обновить balances.json на GitHub, чтобы сохранить изменения перманентно).`);
+            
+            if (targetId === currentUserId) {
+                renderMyWallet(currentUserId);
+            }
+        }
+
+        function adminSaveMember() {
+            const key = document.getElementById('admin-select-member').value;
+            if (!appData.team[key]) return;
+
+            appData.team[key].name = document.getElementById('admin-member-name').value;
+            appData.team[key].status = document.getElementById('admin-member-status').value;
+            appData.team[key].role = document.getElementById('admin-member-role').value;
+            appData.team[key].avatar = document.getElementById('admin-member-avatar').value;
+            
+            const badgesStr = document.getElementById('admin-member-badges').value;
+            appData.team[key].badges = badgesStr.split(',').map(b => b.trim()).filter(b => b.length > 0);
+
+            alert(`Данные сотрудника ${appData.team[key].name} обновлены в памяти!\n\n(Скопируйте обновленный блок из консоли или обновите файл balances.json на GitHub).`);
+            console.log("JSON для balances.json:", JSON.stringify(appData, null, 2));
+            renderTeamList();
         }
 
         // Корзина
